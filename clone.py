@@ -10,7 +10,10 @@ def init_parser():
 
     parser.add_argument('-u', '--user', help="Specify the gitlab user")
     parser.add_argument(
-        '-f', '--file', help="file with reposlist", required=True)
+        '-f', '--file', help="file path with the list", required=True)
+
+    parser.add_argument(
+        '-d', '--destiny', help="file with reposlist")
 
     return parser.parse_args()
 
@@ -20,12 +23,16 @@ if __name__ == '__main__':
 
     username = args.user
     file_path = args.file
+    destiny = args.destiny
 
     repos = None
     with open(file_path, 'r') as f:
         repos = f.read().split('\n')
 
-    print('Cloning repos...', end="\n\n")
+    if destiny:
+        os.chdir(destiny)
+
+    print(f'Cloning repos in {os.getcwd()}', end="\n\n")
 
     for repo in repos:
         repo_with_user = repo
